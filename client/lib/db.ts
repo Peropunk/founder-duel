@@ -41,9 +41,9 @@ export async function uploadAvatar(userId: string, file: File): Promise<string |
   if (!supabase) return null;
   try {
     const path = `${userId}/${Date.now()}-${file.name}`;
-    const { error: uploadErr } = await supabase.storage.from("avatars").upload(path, file, { upsert: true, cacheControl: "3600", contentType: file.type });
+    const { error: uploadErr } = await supabase.storage.from("avatar").upload(path, file, { upsert: true, cacheControl: "3600", contentType: file.type });
     if (uploadErr) throw uploadErr;
-    const { data } = supabase.storage.from("avatars").getPublicUrl(path);
+    const { data } = supabase.storage.from("avatar").getPublicUrl(path);
     return data.publicUrl ?? null;
   } catch (_e) {
     try {
