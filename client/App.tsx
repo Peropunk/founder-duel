@@ -12,6 +12,7 @@ import AuthPage from "./pages/Auth";
 import ProfilePage from "./pages/Profile";
 import Header from "@/components/Header";
 import { AuthProvider } from "@/hooks/useAuth";
+import MyProfile from "./pages/MyProfile";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<AuthPage />} />
             <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/me" element={<MyProfile />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
