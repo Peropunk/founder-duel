@@ -52,6 +52,20 @@ export async function listMyIncoming(): Promise<Challenge[]> {
   return data as Challenge[];
 }
 
+export async function listMyOutgoingPending(): Promise<string[]> {
+  const supabase = getSupabaseClient();
+  if (!supabase) return [];
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return [];
+  const { data, error } = await supabase
+    .from("challenges")
+    .select("to_user_id")
+    .eq("from_user_id", user.id)
+    .eq("status", "pending");
+  if (error) throw error;
+  return (data ?? []).map((r: any) => r.to_user_id as string);
+}
+
 export async function respondChallenge(
   id: string,
   status: "accepted" | "rejected",
