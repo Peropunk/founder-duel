@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { listProfiles, createChallenge } from "@/lib/challenges";
+import { listProfiles, createChallenge, listMyOutgoingPending } from "@/lib/challenges";
 import type { DbProfile } from "@/lib/db";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
