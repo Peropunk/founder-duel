@@ -13,6 +13,7 @@ import ProfilePage from "./pages/Profile";
 import Header from "@/components/Header";
 import { AuthProvider } from "@/hooks/useAuth";
 import MyProfile from "./pages/MyProfile";
+import UserProfile from "./pages/UserProfile";
 import NotificationBar from "@/components/NotificationBar";
 
 const queryClient = new QueryClient();
