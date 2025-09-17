@@ -1,7 +1,11 @@
 import { DemoResponse } from "@shared/api";
 import { useEffect, useState } from "react";
 
+import { useAuth } from "@/hooks/useAuth";
+import ChallengeList from "@/components/ChallengeList";
+
 export default function Index() {
+  const { user } = useAuth();
   return (
     <div className="min-h-[calc(100vh-4rem)] bg-gradient-to-b from-background to-muted">
       <section className="container grid lg:grid-cols-2 items-center gap-8 py-16">
@@ -10,7 +14,7 @@ export default function Index() {
           <h1 className="font-display text-4xl md:text-5xl leading-tight">FounderDuel — Compete on startup growth</h1>
           <p className="text-muted-foreground max-w-prose">Pit founders head-to-head on metrics that matter. Track progress, set public challenges, and grow faster together.</p>
           <div className="flex gap-3">
-            <a href="/auth" className="inline-flex h-11 items-center justify-center rounded-md bg-primary px-6 text-primary-foreground shadow hover:bg-primary/90">Login / Sign up</a>
+            {!user && <a href="/auth" className="inline-flex h-11 items-center justify-center rounded-md bg-primary px-6 text-primary-foreground shadow hover:bg-primary/90">Login / Sign up</a>}
             <a href="/profile" className="inline-flex h-11 items-center justify-center rounded-md border px-6">Create your profile</a>
           </div>
           <ul className="grid grid-cols-2 gap-4 pt-4 text-sm text-muted-foreground">
@@ -25,6 +29,18 @@ export default function Index() {
           <img src="https://cdn.builder.io/api/v1/image/assets%2F462fdc1538bd468b99eec373dc088499%2F145889f40d2c4fc2b66976c7dd17929e?format=webp&width=800" alt="FounderDuel logo" className="w-full h-auto drop-shadow-2xl" />
         </div>
       </section>
+
+      {user && (
+        <section className="border-t py-10">
+          <div className="container space-y-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-semibold">Challenge Founders</h2>
+            </div>
+            <ChallengeList />
+          </div>
+        </section>
+      )}
+
       <section className="border-t py-10">
         <div className="container grid md:grid-cols-3 gap-6">
           <Feature title="Make it a duel" desc="Challenge another founder on growth, revenue, shipping streaks and more." />
