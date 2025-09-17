@@ -1,5 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
-import { listProfiles, createChallenge, listMyOutgoingPending } from "@/lib/challenges";
+import {
+  listProfiles,
+  createChallenge,
+  listMyOutgoingPending,
+} from "@/lib/challenges";
 import type { DbProfile } from "@/lib/db";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -118,7 +122,8 @@ export default function ChallengeList() {
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {filtered.map((p) => {
-          const isSent = outgoing.includes(p.user_id) || sendingId === p.user_id;
+          const isSent =
+            outgoing.includes(p.user_id) || sendingId === p.user_id;
           return (
             <div
               key={p.user_id}
@@ -131,7 +136,9 @@ export default function ChallengeList() {
                   className="h-12 w-12 rounded-md object-cover border bg-muted"
                 />
                 <div>
-                  <div className="font-medium">{p.display_name ?? "Unnamed"}</div>
+                  <div className="font-medium">
+                    {p.display_name ?? "Unnamed"}
+                  </div>
                   <div className="text-xs text-muted-foreground">
                     {p.startup_name}
                   </div>
@@ -149,11 +156,12 @@ export default function ChallengeList() {
                   </span>
                 )}
               </div>
-              <Button
-                onClick={() => onChallenge(p)}
-                disabled={isSent}
-              >
-                {sendingId === p.user_id ? "Sending..." : isSent ? "Sent" : "Challenge"}
+              <Button onClick={() => onChallenge(p)} disabled={isSent}>
+                {sendingId === p.user_id
+                  ? "Sending..."
+                  : isSent
+                    ? "Sent"
+                    : "Challenge"}
               </Button>
             </div>
           );

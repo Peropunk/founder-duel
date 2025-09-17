@@ -25,13 +25,11 @@ export async function createChallenge(toUserId: string, message?: string) {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) throw new Error("Not authenticated");
-  const { error } = await supabase
-    .from("challenges")
-    .insert({
-      from_user_id: user.id,
-      to_user_id: toUserId,
-      message: message ?? null,
-    });
+  const { error } = await supabase.from("challenges").insert({
+    from_user_id: user.id,
+    to_user_id: toUserId,
+    message: message ?? null,
+  });
   if (error) throw error;
 }
 
@@ -55,7 +53,9 @@ export async function listMyIncoming(): Promise<Challenge[]> {
 export async function listMyOutgoingPending(): Promise<string[]> {
   const supabase = getSupabaseClient();
   if (!supabase) return [];
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
   if (!user) return [];
   const { data, error } = await supabase
     .from("challenges")

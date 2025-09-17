@@ -10,7 +10,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import NotificationButton from "@/components/NotificationButton";
 
-const logoUrl = "https://cdn.builder.io/api/v1/image/assets%2F462fdc1538bd468b99eec373dc088499%2F145889f40d2c4fc2b66976c7dd17929e?format=webp&width=400";
+const logoUrl =
+  "https://cdn.builder.io/api/v1/image/assets%2F462fdc1538bd468b99eec373dc088499%2F145889f40d2c4fc2b66976c7dd17929e?format=webp&width=400";
 
 export default function Header() {
   const { user, signOut } = useAuth();
@@ -23,8 +24,26 @@ export default function Header() {
           <img src={logoUrl} alt="FounderDuel" className="h-8 w-auto" />
         </Link>
         <nav className="flex items-center gap-6 text-sm font-medium">
-          <NavLink to="/" className={({isActive}) => isActive || location.pathname === "/" ? "text-foreground" : "text-muted-foreground hover:text-foreground"}>Home</NavLink>
-          <NavLink to="/profile" className={({isActive}) => isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground"}>Profile</NavLink>
+          <NavLink
+            to="/"
+            className={({ isActive }) =>
+              isActive || location.pathname === "/"
+                ? "text-foreground"
+                : "text-muted-foreground hover:text-foreground"
+            }
+          >
+            Home
+          </NavLink>
+          <NavLink
+            to="/profile"
+            className={({ isActive }) =>
+              isActive
+                ? "text-foreground"
+                : "text-muted-foreground hover:text-foreground"
+            }
+          >
+            Profile
+          </NavLink>
         </nav>
         <div className="flex items-center gap-3">
           {user && <NotificationButton />}
@@ -32,8 +51,13 @@ export default function Header() {
             <DropdownMenu>
               <DropdownMenuTrigger className="outline-none">
                 <Avatar className="h-9 w-9">
-                  <AvatarImage src={user.avatarUrl ?? undefined} alt={user.name ?? user.email ?? ""} />
-                  <AvatarFallback>{(user.name ?? user.email ?? "U").slice(0,2).toUpperCase()}</AvatarFallback>
+                  <AvatarImage
+                    src={user.avatarUrl ?? undefined}
+                    alt={user.name ?? user.email ?? ""}
+                  />
+                  <AvatarFallback>
+                    {(user.name ?? user.email ?? "U").slice(0, 2).toUpperCase()}
+                  </AvatarFallback>
                 </Avatar>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
@@ -43,7 +67,9 @@ export default function Header() {
                 <DropdownMenuItem asChild>
                   <Link to="/me">View profile</Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => signOut()}>Sign out</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => signOut()}>
+                  Sign out
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
