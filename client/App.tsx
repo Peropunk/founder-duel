@@ -13,6 +13,7 @@ import ProfilePage from "./pages/Profile";
 import Header from "@/components/Header";
 import { AuthProvider } from "@/hooks/useAuth";
 import MyProfile from "./pages/MyProfile";
+import NotificationBar from "@/components/NotificationBar";
 
 const queryClient = new QueryClient();
 
@@ -24,6 +25,7 @@ const App = () => (
       <BrowserRouter>
         <AuthProvider>
           <Header />
+          <NotificationBar />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<AuthPage />} />
