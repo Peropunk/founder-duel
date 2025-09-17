@@ -8,6 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import NotificationButton from "@/components/NotificationButton";
 
 const logoUrl = "https://cdn.builder.io/api/v1/image/assets%2F462fdc1538bd468b99eec373dc088499%2F145889f40d2c4fc2b66976c7dd17929e?format=webp&width=400";
 
@@ -25,7 +26,8 @@ export default function Header() {
           <NavLink to="/" className={({isActive}) => isActive || location.pathname === "/" ? "text-foreground" : "text-muted-foreground hover:text-foreground"}>Home</NavLink>
           <NavLink to="/profile" className={({isActive}) => isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground"}>Profile</NavLink>
         </nav>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
+          {user && <NotificationButton />}
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger className="outline-none">
