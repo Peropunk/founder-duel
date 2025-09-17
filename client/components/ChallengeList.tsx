@@ -42,10 +42,15 @@ export default function ChallengeList() {
   const [category, setCategory] = useState("All");
   const [stage, setStage] = useState("All");
   const [sendingId, setSendingId] = useState<string | null>(null);
+  const [outgoing, setOutgoing] = useState<string[]>([]);
 
   useEffect(() => {
     listProfiles().then(setProfiles).catch(console.error);
   }, []);
+
+  useEffect(() => {
+    listMyOutgoingPending().then(setOutgoing).catch(console.error);
+  }, [user?.id]);
 
   const filtered = useMemo(
     () =>
@@ -66,6 +71,7 @@ export default function ChallengeList() {
     setSendingId(target.user_id);
     try {
       await createChallenge(target.user_id);
+      setOutgoing((prev) => Array.from(new Set([...prev, target.user_id])));
       alert(`Challenge sent to ${target.display_name ?? "user"}`);
     } catch (e: any) {
       alert(e.message ?? "Failed to send challenge");
@@ -111,45 +117,47 @@ export default function ChallengeList() {
       </div>
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filtered.map((p) => (
-          <div
-            key={p.user_id}
-            className="rounded-lg border bg-card p-4 flex flex-col gap-3"
-          >
-            <div className="flex items-center gap-3">
-              <img
-                src={p.avatar_url ?? p.avatar_data ?? undefined}
-                alt={p.display_name ?? "avatar"}
-                className="h-12 w-12 rounded-md object-cover border bg-muted"
-              />
-              <div>
-                <div className="font-medium">{p.display_name ?? "Unnamed"}</div>
-                <div className="text-xs text-muted-foreground">
-                  {p.startup_name}
+        {filtered.map((p) => {
+          const isSent = outgoing.includes(p.user_id) || sendingId === p.user_id;
+          return (
+            <div
+              key={p.user_id}
+              className="rounded-lg border bg-card p-4 flex flex-col gap-3"
+            >
+              <div className="flex items-center gap-3">
+                <img
+                  src={p.avatar_url ?? p.avatar_data ?? undefined}
+                  alt={p.display_name ?? "avatar"}
+                  className="h-12 w-12 rounded-md object-cover border bg-muted"
+                />
+                <div>
+                  <div className="font-medium">{p.display_name ?? "Unnamed"}</div>
+                  <div className="text-xs text-muted-foreground">
+                    {p.startup_name}
+                  </div>
                 </div>
               </div>
+              <div className="flex flex-wrap gap-2 text-xs">
+                {p.category && (
+                  <span className="rounded bg-accent px-2 py-1">
+                    {p.category}
+                  </span>
+                )}
+                {p.stage && (
+                  <span className="rounded bg-secondary px-2 py-1 text-secondary-foreground">
+                    {p.stage}
+                  </span>
+                )}
+              </div>
+              <Button
+                onClick={() => onChallenge(p)}
+                disabled={isSent}
+              >
+                {sendingId === p.user_id ? "Sending..." : isSent ? "Sent" : "Challenge"}
+              </Button>
             </div>
-            <div className="flex flex-wrap gap-2 text-xs">
-              {p.category && (
-                <span className="rounded bg-accent px-2 py-1">
-                  {p.category}
-                </span>
-              )}
-              {p.stage && (
-                <span className="rounded bg-secondary px-2 py-1 text-secondary-foreground">
-                  {p.stage}
-                </span>
-              )}
-            </div>
-            <Button
-              onClick={() => onChallenge(p)}
-              disabled={sendingId === p.user_id}
-            >
-              {" "}
-              {sendingId === p.user_id ? "Sending..." : "Challenge"}{" "}
-            </Button>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
