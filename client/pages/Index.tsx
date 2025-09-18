@@ -22,26 +22,27 @@ export default function Index() {
             <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-secondary/20 rounded-full blur-3xl animate-pulse delay-1000" />
             
             <div className="container relative grid lg:grid-cols-2 items-center gap-12 py-20 lg:py-32">
-              <div className="space-y-8">
+              <div className="space-y-8 text-center lg:text-left">
                 <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-sm font-medium text-primary ring-1 ring-primary/20 animate-fade-in">
                   <Zap className="w-4 h-4" />
                   Challenge-driven growth
                 </div>
                 
                 <div className="space-y-4">
-                  <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-bold leading-tight tracking-tight bg-gradient-to-r from-foreground via-foreground to-primary/80 bg-clip-text text-transparent">
+                  {/* FIX: Added break-words to prevent text from being cut off on smaller screens */}
+                  <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-bold leading-tight tracking-tight bg-gradient-to-r from-foreground via-foreground to-primary/80 bg-clip-text text-transparent break-words">
                     FounderDuel
                   </h1>
                   <h2 className="text-2xl md:text-3xl font-semibold text-muted-foreground">
                     Compete on startup growth
                   </h2>
-                  <p className="text-lg text-muted-foreground max-w-prose leading-relaxed">
+                  <p className="text-lg text-muted-foreground max-w-prose leading-relaxed mx-auto lg:mx-0">
                     Pit founders head-to-head on metrics that matter. Track progress,
                     set public challenges, and accelerate growth through friendly competition.
                   </p>
                 </div>
 
-                <div className="flex flex-col sm:flex-row gap-4">
+                <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                   <Button size="lg" className="group h-14 px-8 text-lg" asChild>
                     <a href="/auth">
                       Start Competing
@@ -56,7 +57,7 @@ export default function Index() {
                 </div>
 
                 {/* Social Proof */}
-                <div className="flex items-center gap-6 pt-4">
+                <div className="flex items-center gap-6 pt-4 justify-center lg:justify-start">
                   <div className="flex -space-x-2">
                     {[1, 2, 3, 4].map((i) => (
                       <div key={i} className="w-10 h-10 rounded-full bg-gradient-to-r from-primary to-secondary border-2 border-background" />
@@ -69,7 +70,7 @@ export default function Index() {
               </div>
 
               {/* Hero Visual */}
-              <div className="relative lg:justify-self-end">
+              <div className="relative lg:justify-self-end w-full max-w-md mx-auto">
                 <div className="relative">
                   {/* Glow effect */}
                   <div className="absolute -inset-8 bg-gradient-to-r from-primary/20 via-secondary/20 to-accent/20 blur-3xl rounded-3xl" />
@@ -129,7 +130,7 @@ export default function Index() {
                 </p>
               </div>
 
-              <div className="grid md:grid-cols-3 gap-8">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <FeatureCard
                   icon={<Target className="w-12 h-12" />}
                   title="Targeted Challenges"
@@ -162,7 +163,7 @@ export default function Index() {
                 </p>
               </div>
 
-              <div className="grid md:grid-cols-3 gap-8">
+              <div className="grid md:grid-cols-3 gap-8 items-start">
                 <StepCard
                   step="01"
                   title="Challenge a Founder"
@@ -206,7 +207,7 @@ export default function Index() {
                 </Button>
               </div>
 
-              <div className="flex flex-wrap justify-center gap-8 pt-8 text-sm text-muted-foreground">
+              <div className="flex flex-wrap justify-center gap-x-8 gap-y-4 pt-8 text-sm text-muted-foreground">
                 <div className="flex items-center gap-2">
                   <CheckCircle className="w-4 h-4 text-green-500" />
                   Free to use
@@ -232,12 +233,13 @@ export default function Index() {
       {user && (
         <section className="py-20 bg-gradient-to-b from-background to-muted">
           <div className="container space-y-8">
-            <div className="flex items-center justify-between">
-              <div>
+            {/* FIX: Made this header responsive for small screens */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div className="text-center sm:text-left">
                 <h2 className="text-3xl font-bold mb-2">Your Dashboard</h2>
                 <p className="text-muted-foreground">Challenge other founders and track your progress</p>
               </div>
-              <Button asChild>
+              <Button asChild className="w-full sm:w-auto">
                 <a href="/challenges">
                   View Active Challenges
                   <ArrowRight className="ml-2 w-4 h-4" />
@@ -264,7 +266,7 @@ function FeatureCard({
   gradient: string;
 }) {
   return (
-    <Card className="group relative overflow-hidden border-0 bg-card/50 backdrop-blur-sm hover:bg-card/80 transition-all duration-300 hover:shadow-xl hover:scale-105">
+    <Card className="group relative overflow-hidden border-0 bg-card/50 backdrop-blur-sm hover:bg-card/80 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
       <CardContent className="p-8 space-y-4">
         <div className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${gradient} p-3 text-white group-hover:scale-110 transition-transform duration-300`}>
           {icon}
@@ -280,7 +282,7 @@ function FeatureCard({
 function StepCard({ step, title, description }: { step: string; title: string; description: string }) {
   return (
     <div className="relative">
-      <div className="flex items-start gap-4">
+      <div className="flex flex-col items-center text-center md:flex-row md:text-left md:items-start gap-4">
         <div className="flex-shrink-0 w-12 h-12 rounded-full bg-primary text-primary-foreground font-bold text-lg flex items-center justify-center">
           {step}
         </div>
