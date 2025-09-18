@@ -30,9 +30,9 @@ export default function Index() {
                 </div>
                 
                 <div className="space-y-4">
-                  <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-bold leading-tight tracking-tight bg-gradient-to-r from-foreground via-foreground to-primary/80 bg-clip-text text-transparent break-all lg:break-normal">
-                    FounderDuel
-                  </h1>
+                 <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-bold leading-tight tracking-tight bg-gradient-to-r from-foreground via-foreground to-primary/80 bg-clip-text text-transparent break-words">
+  FounderDuel
+</h1>
                   <h2 className="text-2xl md:text-3xl font-semibold text-muted-foreground">
                     Compete on startup growth
                   </h2>
@@ -70,7 +70,7 @@ export default function Index() {
               </div>
 
               {/* Hero Visual */}
-              <div className="relative lg:justify-self-end">
+              <div className="relative lg:justify-self-end min-w-0">
                 <div className="relative">
                   {/* Glow effect */}
                   <div className="absolute -inset-8 bg-gradient-to-r from-primary/20 via-secondary/20 to-accent/20 blur-3xl rounded-3xl" />
