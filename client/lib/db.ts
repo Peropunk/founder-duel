@@ -18,7 +18,9 @@ export type DbProfile = {
   updated_at?: string | null;
 };
 
-export async function fetchMyProfile(userId: string): Promise<DbProfile | null> {
+export async function fetchMyProfile(
+  userId: string,
+): Promise<DbProfile | null> {
   const supabase = getSupabaseClient();
   if (!supabase) return null;
   const { data, error } = await supabase
@@ -52,19 +54,30 @@ export async function upsertMyProfile(profile: DbProfile) {
   return data as DbProfile;
 }
 
-export async function uploadAvatar(userId: string, file: File): Promise<string | null> {
+export async function uploadAvatar(
+  userId: string,
+  file: File,
+): Promise<string | null> {
   const supabase = getSupabaseClient();
   if (!supabase) return null;
   try {
     const path = `${userId}/avatars/${Date.now()}-${file.name}`;
-    const { error: uploadErr } = await supabase.storage.from("avatar").upload(path, file, { upsert: true, cacheControl: "3600", contentType: file.type });
+    const { error: uploadErr } = await supabase.storage
+      .from("avatar")
+      .upload(path, file, {
+        upsert: true,
+        cacheControl: "3600",
+        contentType: file.type,
+      });
     if (uploadErr) throw uploadErr;
     const { data } = supabase.storage.from("avatar").getPublicUrl(path);
     return data.publicUrl ?? null;
   } catch (_e) {
     try {
       const buf = await file.arrayBuffer();
-      const base64 = `data:${file.type};base64,` + btoa(String.fromCharCode(...new Uint8Array(buf)));
+      const base64 =
+        `data:${file.type};base64,` +
+        btoa(String.fromCharCode(...new Uint8Array(buf)));
       return base64;
     } catch {
       return null;
@@ -72,19 +85,30 @@ export async function uploadAvatar(userId: string, file: File): Promise<string |
   }
 }
 
-export async function uploadCover(userId: string, file: File): Promise<string | null> {
+export async function uploadCover(
+  userId: string,
+  file: File,
+): Promise<string | null> {
   const supabase = getSupabaseClient();
   if (!supabase) return null;
   try {
     const path = `${userId}/covers/${Date.now()}-${file.name}`;
-    const { error: uploadErr } = await supabase.storage.from("avatar").upload(path, file, { upsert: true, cacheControl: "3600", contentType: file.type });
+    const { error: uploadErr } = await supabase.storage
+      .from("avatar")
+      .upload(path, file, {
+        upsert: true,
+        cacheControl: "3600",
+        contentType: file.type,
+      });
     if (uploadErr) throw uploadErr;
     const { data } = supabase.storage.from("avatar").getPublicUrl(path);
     return data.publicUrl ?? null;
   } catch (_e) {
     try {
       const buf = await file.arrayBuffer();
-      const base64 = `data:${file.type};base64,` + btoa(String.fromCharCode(...new Uint8Array(buf)));
+      const base64 =
+        `data:${file.type};base64,` +
+        btoa(String.fromCharCode(...new Uint8Array(buf)));
       return base64;
     } catch {
       return null;

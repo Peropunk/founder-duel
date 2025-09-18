@@ -36,7 +36,7 @@ export async function createChallenge(toUserId: string, message?: string) {
   const twitter = (me as any)?.twitter?.trim();
   if (!website || !twitter) {
     throw new Error(
-      "Add your website and X account link in Profile to send a battle request."
+      "Add your website and X account link in Profile to send a battle request.",
     );
   }
   const { error } = await supabase.from("challenges").insert({

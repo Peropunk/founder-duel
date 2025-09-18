@@ -164,7 +164,12 @@ export default function ChallengeList() {
                       ? "Sent"
                       : "Challenge"}
                 </Button>
-                <a href={`/u/${p.user_id}`} className="inline-flex h-9 items-center justify-center rounded-md border px-3 text-sm">View profile</a>
+                <a
+                  href={`/u/${p.user_id}`}
+                  className="inline-flex h-9 items-center justify-center rounded-md border px-3 text-sm"
+                >
+                  View profile
+                </a>
               </div>
             </div>
           );

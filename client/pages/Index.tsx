@@ -39,7 +39,8 @@ export default function Index() {
             </div>
             <ul className="grid grid-cols-2 gap-4 pt-4 text-sm text-muted-foreground">
               <li className="flex items-center gap-2">
-                <span className="size-1.5 rounded-full bg-primary" /> Google login
+                <span className="size-1.5 rounded-full bg-primary" /> Google
+                login
               </li>
               <li className="flex items-center gap-2">
                 <span className="size-1.5 rounded-full bg-primary" /> Founder
@@ -50,7 +51,8 @@ export default function Index() {
                 status
               </li>
               <li className="flex items-center gap-2">
-                <span className="size-1.5 rounded-full bg-primary" /> Social links
+                <span className="size-1.5 rounded-full bg-primary" /> Social
+                links
               </li>
             </ul>
           </div>

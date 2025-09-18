@@ -16,27 +16,30 @@ export function useProfile() {
         const data = await fetchMyProfile(user.id);
         if (!mounted) return;
         if (data) setProfile(data);
-        else setProfile({
-          user_id: user.id,
-          display_name: user.name ?? user.email ?? "",
-          startup_name: "",
-          category: "",
-          stage: "",
-          website: "",
-          twitter: "",
-          linkedin: "",
-          github: "",
-          avatar_url: user.avatarUrl ?? null,
-          avatar_data: null,
-          cover_url: null,
-          cover_data: null,
-        });
+        else
+          setProfile({
+            user_id: user.id,
+            display_name: user.name ?? user.email ?? "",
+            startup_name: "",
+            category: "",
+            stage: "",
+            website: "",
+            twitter: "",
+            linkedin: "",
+            github: "",
+            avatar_url: user.avatarUrl ?? null,
+            avatar_data: null,
+            cover_url: null,
+            cover_data: null,
+          });
       } finally {
         if (mounted) setLoading(false);
       }
     }
     run();
-    return () => { mounted = false; };
+    return () => {
+      mounted = false;
+    };
   }, [user?.id]);
 
   const save = useCallback(async (data: DbProfile) => {
