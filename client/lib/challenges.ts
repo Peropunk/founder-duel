@@ -25,6 +25,20 @@ export async function createChallenge(toUserId: string, message?: string) {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) throw new Error("Not authenticated");
+  // Require sender to have website and X (twitter) set
+  const { data: me, error: meErr } = await supabase
+    .from("profiles")
+    .select("website,twitter")
+    .eq("user_id", user.id)
+    .maybeSingle();
+  if (meErr) throw meErr;
+  const website = (me as any)?.website?.trim();
+  const twitter = (me as any)?.twitter?.trim();
+  if (!website || !twitter) {
+    throw new Error(
+      "Add your website and X account link in Profile to send a battle request."
+    );
+  }
   const { error } = await supabase.from("challenges").insert({
     from_user_id: user.id,
     to_user_id: toUserId,
@@ -77,4 +91,46 @@ export async function respondChallenge(
     .update({ status })
     .eq("id", id);
   if (error) throw error;
+}
+
+export type ChallengeWithProfiles = {
+  challenge: Challenge;
+  from: DbProfile | null;
+  to: DbProfile | null;
+};
+
+export async function listMyActiveAccepted(): Promise<ChallengeWithProfiles[]> {
+  const supabase = getSupabaseClient();
+  if (!supabase) return [];
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return [];
+  const { data: challenges, error } = await supabase
+    .from("challenges")
+    .select("*")
+    .or(`from_user_id.eq.${user.id},to_user_id.eq.${user.id}`)
+    .eq("status", "accepted")
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+  const ids = Array.from(
+    new Set([
+      ...((challenges ?? []) as any[]).map((c) => c.from_user_id),
+      ...((challenges ?? []) as any[]).map((c) => c.to_user_id),
+    ]),
+  ).filter(Boolean);
+  if (ids.length === 0) return [];
+  const { data: profiles, error: pErr } = await supabase
+    .from("profiles")
+    .select("*")
+    .in("user_id", ids as string[]);
+  if (pErr) throw pErr;
+  const byId = Object.fromEntries(
+    (profiles as any[]).map((p) => [p.user_id, p as DbProfile]),
+  );
+  return (challenges as any[]).map((c) => ({
+    challenge: c as Challenge,
+    from: byId[c.from_user_id] ?? null,
+    to: byId[c.to_user_id] ?? null,
+  }));
 }

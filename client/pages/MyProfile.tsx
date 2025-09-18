@@ -5,10 +5,12 @@ import { Card, CardContent } from "@/components/ui/card";
 export default function MyProfile() {
   const { profile } = useProfile();
   const [avatarSrc, setAvatarSrc] = useState<string | undefined>(undefined);
+  const [coverSrc, setCoverSrc] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     if (!profile) return;
     setAvatarSrc(profile.avatar_url ?? profile.avatar_data ?? undefined);
+    setCoverSrc(profile.cover_url ?? profile.cover_data ?? undefined);
   }, [profile]);
 
   if (!profile) return <div className="container py-12">Loading...</div>;
@@ -17,8 +19,11 @@ export default function MyProfile() {
     <div className="min-h-[calc(100vh-4rem)] bg-gradient-to-b from-background to-muted py-12">
       <div className="container max-w-3xl">
         <Card>
-          <CardContent className="p-6">
-            <div className="flex items-start gap-6">
+          <CardContent className="p-0">
+            <div className="h-40 w-full overflow-hidden rounded-t-lg bg-muted">
+              {coverSrc && <img src={coverSrc} alt="cover" className="h-full w-full object-cover" />}
+            </div>
+            <div className="p-6 flex items-start gap-6">
               <img src={avatarSrc} alt="avatar" className="h-24 w-24 rounded-lg object-cover border" />
               <div className="space-y-1">
                 <h1 className="text-2xl font-semibold">{profile.display_name}</h1>

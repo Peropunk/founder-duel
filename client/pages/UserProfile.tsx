@@ -23,8 +23,17 @@ export default function UserProfile() {
   return (
     <div className="min-h-[calc(100vh-4rem)] bg-gradient-to-b from-background to-muted py-12">
       <div className="container max-w-3xl">
-        <div className="rounded-lg border bg-card p-6">
-          <div className="flex items-start gap-6">
+        <div className="rounded-lg border bg-card p-0">
+          <div className="h-40 w-full overflow-hidden rounded-t-lg bg-muted">
+            {(profile.cover_url || profile.cover_data) && (
+              <img
+                src={profile.cover_url ?? profile.cover_data ?? undefined}
+                alt="cover"
+                className="h-full w-full object-cover"
+              />
+            )}
+          </div>
+          <div className="p-6 flex items-start gap-6">
             <img
               src={profile.avatar_url ?? profile.avatar_data ?? undefined}
               alt="avatar"

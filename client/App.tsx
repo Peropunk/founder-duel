@@ -15,6 +15,7 @@ import { AuthProvider } from "@/hooks/useAuth";
 import MyProfile from "./pages/MyProfile";
 import UserProfile from "./pages/UserProfile";
 import NotificationBar from "@/components/NotificationBar";
+import ActiveChallenges from "./pages/ActiveChallenges";
 
 const queryClient = new QueryClient();
 
@@ -33,6 +34,7 @@ const App = () => (
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/me" element={<MyProfile />} />
             <Route path="/u/:id" element={<UserProfile />} />
+            <Route path="/challenges" element={<ActiveChallenges />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

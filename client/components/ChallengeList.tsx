@@ -156,13 +156,16 @@ export default function ChallengeList() {
                   </span>
                 )}
               </div>
-              <Button onClick={() => onChallenge(p)} disabled={isSent}>
-                {sendingId === p.user_id
-                  ? "Sending..."
-                  : isSent
-                    ? "Sent"
-                    : "Challenge"}
-              </Button>
+              <div className="flex gap-2">
+                <Button onClick={() => onChallenge(p)} disabled={isSent}>
+                  {sendingId === p.user_id
+                    ? "Sending..."
+                    : isSent
+                      ? "Sent"
+                      : "Challenge"}
+                </Button>
+                <a href={`/u/${p.user_id}`} className="inline-flex h-9 items-center justify-center rounded-md border px-3 text-sm">View profile</a>
+              </div>
             </div>
           );
         })}

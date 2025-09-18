@@ -44,6 +44,18 @@ export default function Header() {
           >
             Profile
           </NavLink>
+          {user && (
+            <NavLink
+              to="/challenges"
+              className={({ isActive }) =>
+                isActive
+                  ? "text-foreground"
+                  : "text-muted-foreground hover:text-foreground"
+              }
+            >
+              Challenges
+            </NavLink>
+          )}
         </nav>
         <div className="flex items-center gap-3">
           {user && <NotificationButton />}

@@ -12,6 +12,8 @@ export type DbProfile = {
   github: string | null;
   avatar_url: string | null;
   avatar_data: string | null;
+  cover_url: string | null;
+  cover_data: string | null;
   created_at?: string | null;
   updated_at?: string | null;
 };
@@ -40,7 +42,7 @@ export async function uploadAvatar(userId: string, file: File): Promise<string |
   const supabase = getSupabaseClient();
   if (!supabase) return null;
   try {
-    const path = `${userId}/${Date.now()}-${file.name}`;
+    const path = `${userId}/avatars/${Date.now()}-${file.name}`;
     const { error: uploadErr } = await supabase.storage.from("avatar").upload(path, file, { upsert: true, cacheControl: "3600", contentType: file.type });
     if (uploadErr) throw uploadErr;
     const { data } = supabase.storage.from("avatar").getPublicUrl(path);
@@ -49,7 +51,27 @@ export async function uploadAvatar(userId: string, file: File): Promise<string |
     try {
       const buf = await file.arrayBuffer();
       const base64 = `data:${file.type};base64,` + btoa(String.fromCharCode(...new Uint8Array(buf)));
-      return base64; // fallback returned; caller will decide whether it's url or data
+      return base64;
+    } catch {
+      return null;
+    }
+  }
+}
+
+export async function uploadCover(userId: string, file: File): Promise<string | null> {
+  const supabase = getSupabaseClient();
+  if (!supabase) return null;
+  try {
+    const path = `${userId}/covers/${Date.now()}-${file.name}`;
+    const { error: uploadErr } = await supabase.storage.from("avatar").upload(path, file, { upsert: true, cacheControl: "3600", contentType: file.type });
+    if (uploadErr) throw uploadErr;
+    const { data } = supabase.storage.from("avatar").getPublicUrl(path);
+    return data.publicUrl ?? null;
+  } catch (_e) {
+    try {
+      const buf = await file.arrayBuffer();
+      const base64 = `data:${file.type};base64,` + btoa(String.fromCharCode(...new Uint8Array(buf)));
+      return base64;
     } catch {
       return null;
     }

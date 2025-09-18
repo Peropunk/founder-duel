@@ -28,6 +28,8 @@ export function useProfile() {
           github: "",
           avatar_url: user.avatarUrl ?? null,
           avatar_data: null,
+          cover_url: null,
+          cover_data: null,
         });
       } finally {
         if (mounted) setLoading(false);
