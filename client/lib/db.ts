@@ -33,8 +33,22 @@ export async function fetchMyProfile(userId: string): Promise<DbProfile | null> 
 export async function upsertMyProfile(profile: DbProfile) {
   const supabase = getSupabaseClient();
   if (!supabase) throw new Error("Supabase not configured");
-  const { data, error } = await supabase.from("profiles").upsert(profile, { onConflict: "user_id" }).select().single();
-  if (error) throw error;
+  let { data, error } = await supabase
+    .from("profiles")
+    .upsert(profile as any, { onConflict: "user_id" })
+    .select()
+    .single();
+  if (error) {
+    // Retry without optional fields that may not exist yet in the DB
+    const { cover_url, cover_data, ...rest } = profile as any;
+    const retry = await supabase
+      .from("profiles")
+      .upsert(rest, { onConflict: "user_id" })
+      .select()
+      .single();
+    if (retry.error) throw retry.error;
+    data = retry.data as any;
+  }
   return data as DbProfile;
 }
 
