@@ -21,7 +21,7 @@ export default function Index() {
             <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/20 rounded-full blur-3xl animate-pulse" />
             <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-secondary/20 rounded-full blur-3xl animate-pulse delay-1000" />
             
-            <div className="container relative grid lg:grid-cols-2 items-center gap-12 py-20 lg:py-32">
+            <div className="container relative grid lg:grid-cols-2 items-center gap-12 py-20 lg:py-16">
               {/* FIX: Added 'min-w-0' to allow this grid column to shrink properly, preventing the content from overflowing and being cut off. */}
               <div className="space-y-8 min-w-0">
                 <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-sm font-medium text-primary ring-1 ring-primary/20 animate-fade-in">
