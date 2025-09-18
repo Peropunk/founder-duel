@@ -22,14 +22,14 @@ export default function Index() {
             <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-secondary/20 rounded-full blur-3xl animate-pulse delay-1000" />
             
             <div className="container relative grid lg:grid-cols-2 items-center gap-12 py-20 lg:py-32">
-              <div className="space-y-8">
+              {/* FIX: Added 'min-w-0' to allow this grid column to shrink properly, preventing the content from overflowing and being cut off. */}
+              <div className="space-y-8 min-w-0">
                 <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-sm font-medium text-primary ring-1 ring-primary/20 animate-fade-in">
                   <Zap className="w-4 h-4" />
                   Challenge-driven growth
                 </div>
                 
                 <div className="space-y-4">
-                  {/* FIX: Use responsive word-break. Break the word on small screens but keep it normal on large (desktop) screens. */}
                   <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-bold leading-tight tracking-tight bg-gradient-to-r from-foreground via-foreground to-primary/80 bg-clip-text text-transparent break-all lg:break-normal">
                     FounderDuel
                   </h1>
