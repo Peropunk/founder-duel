@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { useAuth } from "@/hooks/useAuth";
 import { Link, useNavigate } from "react-router-dom";
 import { useProfile } from "@/hooks/useProfile";
-import { uploadAvatar } from "@/lib/db";
+import { uploadAvatar, uploadCover } from "@/lib/db";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const CATEGORIES = ["SaaS","Marketplace","AI","Fintech","DevTools","Consumer","Health","Education","Crypto","Other"];
@@ -17,6 +17,7 @@ export default function ProfilePage() {
   const { profile, setProfile, save } = useProfile();
   const [saving, setSaving] = useState(false);
   const fileRef = useRef<HTMLInputElement | null>(null);
+  const coverRef = useRef<HTMLInputElement | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => { /* ensure hook loads profile */ }, []);
@@ -31,6 +32,16 @@ export default function ProfilePage() {
     if (!urlOrData) return;
     const isData = urlOrData.startsWith("data:");
     setProfile({ ...profile, avatar_url: isData ? null : urlOrData, avatar_data: isData ? urlOrData : null });
+  }
+
+  async function handleCoverChange(e: React.ChangeEvent<HTMLInputElement>) {
+    if (!profile || !user) return;
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const urlOrData = await uploadCover(user.id, file);
+    if (!urlOrData) return;
+    const isData = urlOrData.startsWith("data:");
+    setProfile({ ...profile, cover_url: isData ? null : urlOrData, cover_data: isData ? urlOrData : null });
   }
 
   async function handleSave() {
@@ -62,6 +73,21 @@ export default function ProfilePage() {
               <div>Loading...</div>
             ) : (
               <div className="grid gap-8">
+                <div className="grid gap-2">
+                  <Label>Cover image</Label>
+                  <div className="relative h-40 w-full overflow-hidden rounded-lg border bg-muted">
+                    {profile.cover_url || profile.cover_data ? (
+                      <img src={profile.cover_url ?? profile.cover_data ?? undefined} alt="cover" className="h-full w-full object-cover" />
+                    ) : (
+                      <div className="h-full w-full grid place-items-center text-sm text-muted-foreground">No cover</div>
+                    )}
+                  </div>
+                  <div className="flex gap-2">
+                    <input ref={coverRef} type="file" accept="image/*" className="hidden" onChange={handleCoverChange} />
+                    <Button onClick={() => coverRef.current?.click()} variant="secondary">Upload cover</Button>
+                    <Button onClick={() => setProfile({ ...profile, cover_url: null, cover_data: null })} variant="ghost">Remove cover</Button>
+                  </div>
+                </div>
                 <div className="flex items-center gap-6">
                   <img src={avatarSrc} className="h-24 w-24 rounded-lg object-cover border bg-muted" alt="avatar" />
                   <div className="space-x-2">
