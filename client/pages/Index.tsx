@@ -31,7 +31,7 @@ export default function Index() {
                 
                 <div className="space-y-4">
                  <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-bold leading-tight tracking-tight bg-gradient-to-r from-foreground via-foreground to-primary/80 bg-clip-text text-transparent break-words">
-  FounderDuel
+  Founder<br />Duel
 </h1>
                   <h2 className="text-2xl md:text-3xl font-semibold text-muted-foreground">
                     Compete on startup growth
