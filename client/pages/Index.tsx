@@ -29,8 +29,8 @@ export default function Index() {
                 </div>
                 
                 <div className="space-y-4">
-                  {/* FIX: Added break-words to prevent text from being cut off on smaller screens */}
-                  <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-bold leading-tight tracking-tight bg-gradient-to-r from-foreground via-foreground to-primary/80 bg-clip-text text-transparent break-words">
+                  {/* FIX: Replaced 'break-words' with 'break-all' to more aggressively prevent text clipping on small screens */}
+                  <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-bold leading-tight tracking-tight bg-gradient-to-r from-foreground via-foreground to-primary/80 bg-clip-text text-transparent break-all">
                     FounderDuel
                   </h1>
                   <h2 className="text-2xl md:text-3xl font-semibold text-muted-foreground">
@@ -101,7 +101,7 @@ export default function Index() {
                           </div>
                         </div>
 
-                        <div className="flex items-center gap-4">
+                        <div className="flex items-center justify-center gap-4">
                           <div className="flex items-center gap-2">
                             <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-500" />
                             <span className="text-sm font-medium">Sarah K.</span>
@@ -123,7 +123,7 @@ export default function Index() {
           {/* Features Section */}
           <section className="py-20 bg-muted/30">
             <div className="container space-y-16">
-              <div className="text-center space-y-4">
+              <div className="text-center space-y-4 px-4">
                 <h2 className="text-3xl md:text-4xl font-bold">Why founders choose FounderDuel</h2>
                 <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                   Turn competition into acceleration. Build faster, ship more, grow together.
@@ -156,7 +156,7 @@ export default function Index() {
           {/* How it Works */}
           <section className="py-20">
             <div className="container space-y-16">
-              <div className="text-center space-y-4">
+              <div className="text-center space-y-4 px-4">
                 <h2 className="text-3xl md:text-4xl font-bold">How it works</h2>
                 <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                   Simple 3-day challenges that drive real results
@@ -185,7 +185,7 @@ export default function Index() {
 
           {/* CTA Section */}
           <section className="py-20 bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10">
-            <div className="container text-center space-y-8">
+            <div className="container text-center space-y-8 px-4">
               <div className="space-y-4">
                 <h2 className="text-3xl md:text-4xl font-bold">Ready to level up your startup?</h2>
                 <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -233,7 +233,6 @@ export default function Index() {
       {user && (
         <section className="py-20 bg-gradient-to-b from-background to-muted">
           <div className="container space-y-8">
-            {/* FIX: Made this header responsive for small screens */}
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div className="text-center sm:text-left">
                 <h2 className="text-3xl font-bold mb-2">Your Dashboard</h2>
@@ -267,8 +266,8 @@ function FeatureCard({
 }) {
   return (
     <Card className="group relative overflow-hidden border-0 bg-card/50 backdrop-blur-sm hover:bg-card/80 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
-      <CardContent className="p-8 space-y-4">
-        <div className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${gradient} p-3 text-white group-hover:scale-110 transition-transform duration-300`}>
+      <CardContent className="p-8 space-y-4 text-center md:text-left">
+        <div className={`mx-auto md:mx-0 w-16 h-16 rounded-2xl bg-gradient-to-r ${gradient} p-3 text-white group-hover:scale-110 transition-transform duration-300`}>
           {icon}
         </div>
         <h3 className="text-xl font-semibold">{title}</h3>
