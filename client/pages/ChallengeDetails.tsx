@@ -40,12 +40,16 @@ export default function ChallengeDetails() {
       setTasks(t);
       setProofs(p);
     })();
-    return () => { active = false; };
+    return () => {
+      active = false;
+    };
   }, [id]);
 
   const startAt = useMemo(() => {
     if (!challenge) return null;
-    return challenge.accepted_at ? new Date(challenge.accepted_at) : new Date(challenge.created_at);
+    return challenge.accepted_at
+      ? new Date(challenge.accepted_at)
+      : new Date(challenge.created_at);
   }, [challenge]);
 
   const todayIndex = useMemo(() => {
@@ -67,7 +71,10 @@ export default function ChallengeDetails() {
     return proofs.find((p) => p.day === day && p.user_id === user.id);
   }
 
-  async function onFileSelected(day: number, e: React.ChangeEvent<HTMLInputElement>) {
+  async function onFileSelected(
+    day: number,
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) {
     const file = e.target.files?.[0];
     if (!file || !id) return;
     setUploadingDay(day);
@@ -89,36 +96,76 @@ export default function ChallengeDetails() {
           <div>Loading...</div>
         ) : (
           <>
-            <div className="text-sm text-muted-foreground">Starts {startAt?.toLocaleString()} • Ends {startAt && new Date(startAt.getTime() + 3*24*60*60*1000).toLocaleString()}</div>
+            <div className="text-sm text-muted-foreground">
+              Starts {startAt?.toLocaleString()} • Ends{" "}
+              {startAt &&
+                new Date(
+                  startAt.getTime() + 3 * 24 * 60 * 60 * 1000,
+                ).toLocaleString()}
+            </div>
             <div className="grid gap-4">
               {tasks.map((t) => {
                 const idx = t.day - 1;
                 const my = myProofFor(t.day);
-                const canUpload = !ended && todayIndex !== null && idx <= todayIndex && !my;
+                const canUpload =
+                  !ended && todayIndex !== null && idx <= todayIndex && !my;
                 return (
-                  <div key={t.day} className="rounded-lg border bg-card p-4 space-y-3">
+                  <div
+                    key={t.day}
+                    className="rounded-lg border bg-card p-4 space-y-3"
+                  >
                     <div className="flex items-center justify-between">
                       <div className="font-medium">Day {t.day}</div>
-                      {my && <span className="text-xs text-green-600">Submitted</span>}
+                      {my && (
+                        <span className="text-xs text-green-600">
+                          Submitted
+                        </span>
+                      )}
                     </div>
                     <div className="text-sm">{formatTask(t.task_code)}</div>
                     <div className="flex items-center gap-3">
                       {canUpload ? (
                         <>
-                          <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={(e)=>onFileSelected(t.day, e)} />
-                          <Button disabled={uploadingDay === t.day} onClick={() => fileRef.current?.click()}>
-                            {uploadingDay === t.day ? "Uploading..." : "Upload proof"}
+                          <input
+                            ref={fileRef}
+                            type="file"
+                            accept="image/*"
+                            className="hidden"
+                            onChange={(e) => onFileSelected(t.day, e)}
+                          />
+                          <Button
+                            disabled={uploadingDay === t.day}
+                            onClick={() => fileRef.current?.click()}
+                          >
+                            {uploadingDay === t.day
+                              ? "Uploading..."
+                              : "Upload proof"}
                           </Button>
                         </>
                       ) : (
-                        <Button disabled variant="secondary">{ended ? "Ended" : my ? "Submitted" : idx > (todayIndex ?? -1) ? "Opens soon" : "Unavailable"}</Button>
+                        <Button disabled variant="secondary">
+                          {ended
+                            ? "Ended"
+                            : my
+                              ? "Submitted"
+                              : idx > (todayIndex ?? -1)
+                                ? "Opens soon"
+                                : "Unavailable"}
+                        </Button>
                       )}
                     </div>
                     {/* Show all proofs for this day */}
                     <div className="mt-2 flex flex-wrap gap-3">
-                      {proofs.filter((p) => p.day === t.day).map((p) => (
-                        <img key={p.id} src={p.proof_url ?? p.proof_data ?? undefined} alt="proof" className="h-24 w-24 object-cover rounded border bg-muted" />
-                      ))}
+                      {proofs
+                        .filter((p) => p.day === t.day)
+                        .map((p) => (
+                          <img
+                            key={p.id}
+                            src={p.proof_url ?? p.proof_data ?? undefined}
+                            alt="proof"
+                            className="h-24 w-24 object-cover rounded border bg-muted"
+                          />
+                        ))}
                     </div>
                   </div>
                 );

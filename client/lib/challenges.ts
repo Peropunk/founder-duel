@@ -137,12 +137,18 @@ export const TASK_MAP: Record<string, string> = {
 export async function getChallengeById(id: string): Promise<Challenge | null> {
   const supabase = getSupabaseClient();
   if (!supabase) return null;
-  const { data, error } = await supabase.from("challenges").select("*").eq("id", id).maybeSingle();
+  const { data, error } = await supabase
+    .from("challenges")
+    .select("*")
+    .eq("id", id)
+    .maybeSingle();
   if (error) throw error;
   return data as Challenge | null;
 }
 
-export async function listChallengeTasks(challengeId: string): Promise<ChallengeTask[]> {
+export async function listChallengeTasks(
+  challengeId: string,
+): Promise<ChallengeTask[]> {
   const supabase = getSupabaseClient();
   if (!supabase) return [];
   const { data, error } = await supabase
@@ -154,7 +160,9 @@ export async function listChallengeTasks(challengeId: string): Promise<Challenge
   return data as ChallengeTask[];
 }
 
-export async function listChallengeProofs(challengeId: string): Promise<ChallengeTaskProof[]> {
+export async function listChallengeProofs(
+  challengeId: string,
+): Promise<ChallengeTaskProof[]> {
   const supabase = getSupabaseClient();
   if (!supabase) return [];
   const { data, error } = await supabase
@@ -166,7 +174,11 @@ export async function listChallengeProofs(challengeId: string): Promise<Challeng
   return data as ChallengeTaskProof[];
 }
 
-export async function uploadTaskProof(challengeId: string, day: number, file: File): Promise<ChallengeTaskProof> {
+export async function uploadTaskProof(
+  challengeId: string,
+  day: number,
+  file: File,
+): Promise<ChallengeTaskProof> {
   const supabase = getSupabaseClient();
   if (!supabase) throw new Error("Supabase not ready");
   const { data: auth } = await supabase.auth.getUser();
@@ -175,17 +187,29 @@ export async function uploadTaskProof(challengeId: string, day: number, file: Fi
   let urlOrData: string | null = null;
   try {
     const path = `proofs/${challengeId}/${day}-${Date.now()}-${file.name}`;
-    const { error: uploadErr } = await supabase.storage.from("avatar").upload(path, file, { upsert: true, cacheControl: "3600", contentType: file.type });
+    const { error: uploadErr } = await supabase.storage
+      .from("avatar")
+      .upload(path, file, {
+        upsert: true,
+        cacheControl: "3600",
+        contentType: file.type,
+      });
     if (uploadErr) throw uploadErr;
     const { data } = supabase.storage.from("avatar").getPublicUrl(path);
     urlOrData = data.publicUrl ?? null;
   } catch (_e) {
     const buf = await file.arrayBuffer();
-    const base64 = `data:${file.type};base64,` + btoa(String.fromCharCode(...new Uint8Array(buf)));
+    const base64 =
+      `data:${file.type};base64,` +
+      btoa(String.fromCharCode(...new Uint8Array(buf)));
     urlOrData = base64;
   }
   const isData = (urlOrData ?? "").startsWith("data:");
-  const payload: Partial<ChallengeTaskProof> & { challenge_id: string; day: number; user_id: string } = {
+  const payload: Partial<ChallengeTaskProof> & {
+    challenge_id: string;
+    day: number;
+    user_id: string;
+  } = {
     challenge_id: challengeId,
     day,
     user_id: user.id,

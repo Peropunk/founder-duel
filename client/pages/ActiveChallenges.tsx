@@ -79,9 +79,15 @@ export default function ActiveChallenges() {
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="text-xs text-muted-foreground">
-                      Started {new Date(challenge.created_at).toLocaleDateString()}
+                      Started{" "}
+                      {new Date(challenge.created_at).toLocaleDateString()}
                     </div>
-                    <a href={`/challenges/${challenge.id}`} className="inline-flex h-8 items-center justify-center rounded-md border px-3 text-xs">View</a>
+                    <a
+                      href={`/challenges/${challenge.id}`}
+                      className="inline-flex h-8 items-center justify-center rounded-md border px-3 text-xs"
+                    >
+                      View
+                    </a>
                   </div>
                 </div>
               </div>
